@@ -1,0 +1,5 @@
+คำสั่งต่างๆ
+https://docs.mongodb.com/manual/meta/aggregation-quick-reference/
+
+ตารางเปรียบเทียบกับ SQL กับ Aggregation ครับ (ถ้ามีพื้นฐาน SQL ด้วย น่าจะช่วยให้เข้าใจมากขึ้นครับ)
+https://docs.mongodb.com/manual/reference/sql-aggregation-comparison/

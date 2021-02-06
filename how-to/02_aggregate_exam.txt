@@ -1,0 +1,13 @@
+โจทย์ countries
+
+1. ให้ group country ตาม region
+2. หาผลรวมของ region ตาม area ของ country ใน region นั้น
+3. หา subregion
+4. หา subregion ที่มี area > 2,000,000
+
+โจทย์ zip codes (อย่าลืม import zips เข้าไปใน mongodb นะครับ ถ้าลืม ให้กลับไปดูที่ 01_preparation.txt)
+(ถ้าอยากให้ตรงกับที่เฉลย ตั้งชื่อ --collection เป็น zipcodes นะครับ)
+
+1. หา states ที่มี populations > 10,000,000
+2. หา ค่าเฉลี่ย ($avg) ประชากรของเมือง (city) ตาม state
+3. หาเมือง (city) ที่ใหญ่ที่สุด และ เล็กที่สุด ตาม state **ข้อยากครับ**

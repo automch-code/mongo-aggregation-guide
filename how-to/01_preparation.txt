@@ -1,0 +1,75 @@
+1. ดาวน์โหลดข้อมูล countries
+
+  - $ wget https://raw.githubusercontent.com/mledoze/countries/master/countries.json
+
+  (optional) ถ้าอยากจัดเก็บไฟล์ไว้ใน folder ให้เรียบร้อย
+
+    - $ mkdir mongodb-pipeline && mv countries.json mongodb-pipeline && cd mongodb-pipeline
+
+2. เตรียม mongodb
+
+  2.1 จากข้อที่แล้วเรื่อง docker ทุกคนสามารถใช้งาน docker ได้ ดังนั้นเราจะทำการ pull image ของ mongodb ลงมาครับ
+
+    - $ docker pull mongo:4.2.12-bionic
+
+  2.2 หลังจากขั้นตอนนี้ให้เรา ตรวจสอบว่ามี image ที่เรา pull ลงมาแล้วหรือยัง
+
+    - $ docker images | grep mongo
+
+      ถ้ามี บรรทัดลักษณะแบบด้านล่าง
+      mongo               4.2.12-bionic       a554fe3e4b7f        11 days ago         388MB
+
+      ถือว่าได้ทำการ pull image สำเร็จแล้วครับ
+
+  2.3 หลังจากที่เรามี image ของ mongo เรียบร้อยแล้ว เราจะทำการ run ตัว mongo ครับ (-d คือการ run แบบ background)
+
+    - $ docker run -d mongo:4.2.12-bionic
+
+  หลังจากขั้นตอน 2.3 mongodb ได้ทำการ run บน docker เรียบร้อยแล้วครับ
+
+3. การ import ข้อมูล
+
+  3.1 เราจะทำการ copy ตัว countries.json ลงไปใน container ที่ run mongodb อยู่
+    
+    - $ docker cp countries.json <container_name>:/tmp
+    
+    (ตรวจสอบว่า cp ได้จริงไหม)
+
+    - $ docker exec -it <container_id> ls -l /tmp
+
+    ถ้ามี countries.json แสดงว่า copy สำเร็จครับผม
+
+  3.2 จากไฟล์ countries.json ที่ได้มาแล้วจากการ wget ในขั้นตอนที่ 1. เราจะทำการ import เข้าไปใน mongo
+      เราจะทำการเข้าไปใน container ที่ทำการ run monogodb อยู่
+
+    - $ docker exec -it <container_id> bash
+
+  3.3 เราจะทำการ import ข้อมูลลงไปใน mongo ด้วยคำสั่งนี้
+
+    - $ mongoimport --db <ตั้งชื่อ database> --collection <ตั้งชื่อ collection> --file <ที่อยู่ของไฟล์ json>
+    
+    ตัวอย่าง
+    - $ mongoimport --db myDB --collection countries --file tmp/countries.json --jsonArray
+
+
+** หมายเหตุ **
+  --jsonArray จะใช้ ก็ต่อเมื่อหน้าตาของข้อมูลที่ wget มามีลักษณะข้อมูลแบบนี้
+  [
+    {},
+    {},
+    ...
+    {},
+  ]
+
+  แต่ถ้า wget แล้วข้อมูลใน json มามีลักษณะข้อมูลแบบนี้
+
+  {}
+  {}
+  {}
+  ...
+  {}
+
+  ก็ไม่จำเป็นต้องใช้ --jsonArray ต่อท้ายคำสั่งครับ
+****
+
+
